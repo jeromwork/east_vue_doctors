@@ -26,14 +26,16 @@ export default {
   },
   actions:{
 
-    async GET_DOCTORS_SORTING_AJAX(){
+    async GET_DOCTORS_SORTING_AJAX(state){
       let qdata = {
         action:  'doctors/get_sorting',
         cors_key : '8cbd6a0c2e767862b02887a446bb34ca',
         };
 
+
+
       axios
-          .post('http://dev.eastclinic.local/assets/components/eastclinic/doctors/connector.php', qdata)
+          .post(state.state.url, qdata)
           .then(response => {
             this.info = response;
 
@@ -42,7 +44,7 @@ export default {
             //
           }).catch(error => console.log(error));
     },
-    async GET_DOCTORS_DETAIL_AJAX(){
+    async GET_DOCTORS_DETAIL_AJAX(state){
       let qdata = {
         action:  'doctors/get',
         cors_key : '8cbd6a0c2e767862b02887a446bb34ca',
@@ -51,7 +53,7 @@ export default {
 
       axios
 
-          .post('http://dev.eastclinic.local/assets/components/eastclinic/doctors/connector.php', qdata)
+          .post(state.state.url, qdata)
           .then(response => {
             // this.info = response;
             // console.log('response');
@@ -68,7 +70,7 @@ console.log(state);
         id:getters.currentDoctorId};
       axios
 
-          .post('http://dev.eastclinic.local/assets/components/eastclinic/doctors/connector.php', qdata)
+          .post(state.state.url, qdata)
           .then(response => {this.info = response
 
             //this.commit('doctorSettings/FILL_DOCTOR_SETTINGS_DATA', response.data);
@@ -130,6 +132,9 @@ console.log(state);
 
 
     ],
+      url: (window.location.hostname === 'localhost') ? 'http://dev.eastclinic.local/assets/components/eastclinic/eastdoc/connector.php'
+          :  '/assets/components/eastclinic/eastdoc/connector.php',
+      //url:(window.location.host === 'localhost:8080') ? 'dev.eastclinic.local' : window.location.host,
   },
   getters: {
     getDoctors: state => {        return state.doctors;      },
